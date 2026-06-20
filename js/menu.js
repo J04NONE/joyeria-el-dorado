@@ -1,133 +1,114 @@
 /*
  * Archivo: menu.js
- * Propósito/Descripción General: Este archivo maneja toda la funcionalidad del menú de navegación
- * de la Joyería El Dorado. Controla el menú móvil (hamburguesa), la gestión de roles de usuario,
- * y el proceso de cerrar sesión.
- * Contiene: Lógica del menú móvil, gestión de roles de usuario, funcionalidad de logout
- * Relacionado con: Todos los archivos HTML del proyecto, header.css, base.css
- * Última Modificación: Diciembre 2024 - Auditoría de comentarios
+ * Versión Definitiva: 6.0 - Estructura Anti-Errores de Alcance
  */
-
-// --- Función Principal: Inicialización del Menú ---
-// Esta función se ejecuta cuando la página termina de cargar y configura
-// todo el comportamiento del menú de navegación.
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // --- Sección: Menú Móvil (Hamburguesa) ---
-    // En pantallas pequeñas, el menú se convierte en un botón hamburguesa
-    // que se despliega verticalmente cuando se hace clic.
-    
-    // Buscamos el botón hamburguesa en la página
-    const mobileMenuButton = document.querySelector('.mobile-menu-toggle');
-    // Buscamos el menú de navegación principal
-    const mainNav = document.querySelector('nav'); // Se ajustó el selector a 'nav' para mayor generalidad
 
-    // Verificamos que ambos elementos existan antes de agregar funcionalidad
+    // --- 1. DEFINICIÓN CENTRAL DE VARIABLES DE SESIÓN ---
+    // Leemos las variables una sola vez al cargar la página.
+    // Al ser declaradas aquí, son accesibles para TODAS las funciones dentro de este bloque.
+    const userRoleRaw = localStorage.getItem('userRole') || 'invitado';
+    const userRole = userRoleRaw.toLowerCase().replace(/es$/, '').replace(/s$/, '');
+    const accessToken = localStorage.getItem('accessToken');
+
+    console.log(`Auditoría Definitiva: Rol detectado -> '${userRole}'`);
+
+    // --- 2. EJECUCIÓN DE LAS FUNCIONES PRINCIPALES ---
+    actualizarVisibilidadUI(userRole);
+    verificarAccesoPorRol(userRole, paginaActual());
+    configurarLogout();
+    configurarMenuMovil();
+
+});
+
+/**
+ * Actualiza la visibilidad de los elementos del menú basado en el rol.
+ * @param {string} role - El rol del usuario actual ('administrador', 'vendedor', etc.)
+ */
+function actualizarVisibilidadUI(role) {
+    document.body.className = document.body.className.replace(/role-\w+/g, '').trim();
+    document.body.classList.add(`role-${role}`);
+}
+
+/**
+ * Verifica si el rol actual tiene permiso para ver la página actual.
+ * @param {string} role - El rol del usuario actual.
+ * @param {string} page - El nombre del archivo de la página actual.
+ */
+function verificarAccesoPorRol(role, page) {
+    const permisos = {
+        'administrador': [
+            'administracion_de_usuarios.html',
+            'reporte_ventas.html',
+            'gestion_de_productos.html',
+            'proceso_ventas.html',
+            'dashboard.html',
+            'lista_de_productos.html',
+            'detallle_de_producto.html'
+        ],
+        'vendedor': [
+            'gestion_de_productos.html',
+            'proceso_ventas.html',
+            'dashboard.html',
+            'lista_de_productos.html',
+            'detallle_de_producto.html'
+        ],
+        'cliente': [
+            'historial_ordenes.html',
+            'carrito.html',
+            'dashboard.html',
+            'lista_de_productos.html',
+            'detallle_de_producto.html'
+        ],
+        'invitado': [
+            'login.html',
+            'registro_de_cliente.html',
+            'dashboard.html',
+            'index.html',
+            '',
+            'lista_de_productos.html',
+            'detallle_de_producto.html'
+        ]
+    };
+
+    const paginasPermitidas = permisos[role] || [];
+    if (!paginasPermitidas.includes(page)) {
+        alert('No tienes permisos para acceder a esta página. Serás redirigido.');
+        window.location.href = 'dashboard.html';
+    }
+}
+
+/**
+ * Configura el enlace de "Cerrar Sesión".
+ */
+function configurarLogout() {
+    const logoutLinkElement = document.querySelector('.nav-logout-link a');
+    if (logoutLinkElement) {
+        logoutLinkElement.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.clear();
+            window.location.href = 'login.html';
+        });
+    }
+}
+
+/**
+ * Configura el botón del menú hamburguesa para móviles.
+ */
+function configurarMenuMovil() {
+    const mobileMenuButton = document.querySelector('.mobile-menu-toggle');
+    const mainNav = document.querySelector('nav');
     if (mobileMenuButton && mainNav) {
-        // Cuando se hace clic en el botón hamburguesa
         mobileMenuButton.addEventListener('click', () => {
-            // Alternamos la clase 'active' - si está activo lo desactiva, si no está activo lo activa
             mainNav.classList.toggle('active');
         });
     }
+}
 
-    // --- Sección: Gestión de Roles de Usuario ---
-    // Esta sección controla qué enlaces de navegación ve cada tipo de usuario
-    // (invitado, cliente, vendedor, administrador) basándose en su rol.
-
-    // 1. Obtenemos el rol del usuario desde el almacenamiento local del navegador
-    // Si no hay rol guardado, asumimos que es un 'invitado' (usuario no logueado)
-    const userRole = localStorage.getItem('userRole') || 'invitado';
-
-    // 2. Limpiamos todas las clases de rol existentes en el body
-    // Esto asegura que no haya conflictos entre diferentes roles
-    document.body.className = ''; 
-
-    // 3. Aplicamos la clase de rol correcta al body
-    // Esto activa las reglas CSS que muestran/ocultan enlaces según el rol
-    // Ejemplos: 'role-invitado', 'role-cliente', 'role-vendedor', 'role-admin'
-    document.body.classList.add(`role-${userRole}`);
-    
-    // Mostramos en la consola qué rol tiene el usuario (solo para depuración)
-    console.log(`Rol aplicado al body: role-${userRole}`); // Para depuración
-
-    // --- Sección: Control de Visibilidad de Enlaces Login/Logout ---
-    // Controlamos manualmente la visibilidad de los enlaces de login y logout
-    // para complementar las reglas CSS
-    
-    const logoutLink = document.querySelector('.nav-logout-link');
-    const loginLink = document.querySelector('.nav-login-link');
-
-    if (userRole !== 'invitado') {
-        // Si está logueado, mostrar logout y ocultar login
-        if (logoutLink) logoutLink.style.display = 'list-item';
-        if (loginLink) loginLink.style.display = 'none';
-    } else {
-        // Si es invitado, mostrar login y ocultar logout
-        if (logoutLink) logoutLink.style.display = 'none';
-        if (loginLink) loginLink.style.display = 'list-item';
-    }
-
-    // --- Sección: Funcionalidad de Cerrar Sesión ---
-    // Cuando un usuario hace clic en "Cerrar Sesión", se elimina su rol
-    // y se le redirige a la página de login.
-
-    // Buscamos el enlace de "Cerrar Sesión" en la navegación
-    const logoutLinkElement = document.querySelector('.nav-logout-link a');
-    
-    // Verificamos que el enlace exista antes de agregar funcionalidad
-    if (logoutLinkElement) {
-        // Cuando se hace clic en "Cerrar Sesión"
-        logoutLinkElement.addEventListener('click', (e) => {
-            e.preventDefault(); // Evitamos que el enlace funcione normalmente
-            
-            // Eliminamos el rol del usuario del almacenamiento local
-            // Esto hace que el usuario vuelva a ser 'invitado'
-            localStorage.removeItem('userRole'); // Limpiar el rol
-            
-            // Redirigimos al usuario a la página de login
-            window.location.href = 'login.html'; // Redirigir al login
-        });
-    }
-
-    // --- Sección: Restricción de Acceso por Rol ---
-    // Esta sección verifica que el usuario tenga permisos para acceder a páginas específicas
-    // y redirige a usuarios no autorizados a la página apropiada.
-    
-    // Verificar acceso a páginas de gestión (solo admin y vendedor)
-    verificarAccesoGestion();
-}); 
-
-/*
- * Función para verificar el acceso a páginas de gestión.
- * Solo administradores y vendedores pueden acceder a estas páginas.
+/**
+ * Obtiene el nombre del archivo de la página actual.
+ * @returns {string}
  */
-function verificarAccesoGestion() {
-    // Obtener la página actual
-    const paginaActual = window.location.pathname.split('/').pop();
-    
-    // Lista de páginas que requieren permisos de administrador o vendedor
-    const paginasGestion = [
-        'gestion_de_productos.html',
-        'actualizar_datos_usuario.html'
-    ];
-    
-    // Verificar si estamos en una página de gestión
-    if (paginasGestion.includes(paginaActual)) {
-        // Obtener el rol del usuario
-        const userRole = localStorage.getItem('userRole') || 'invitado';
-        
-        // Verificar si el usuario tiene permisos
-        if (userRole !== 'admin' && userRole !== 'vendedor') {
-            console.log('Usuario sin permisos intentando acceder a:', paginaActual);
-            
-            // Mostrar mensaje de error
-            alert('No tienes permisos para acceder a esta página. Solo administradores y vendedores pueden acceder a las funciones de gestión.');
-            
-            // Redirigir al dashboard
-            window.location.href = 'dashboard.html';
-        } else {
-            console.log('Usuario autorizado accediendo a:', paginaActual);
-        }
-    }
+function paginaActual() {
+    return (window.location.pathname.split('/').pop() || 'index.html').trim();
 } 

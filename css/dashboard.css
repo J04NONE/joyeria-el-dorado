@@ -252,8 +252,8 @@
 }
 
 /* 2. Mostrar acciones solo para administradores */
-body.role-admin .action-admin-only,
-body.role-admin .action-admin-vendor {
+body.role-administrador .action-admin-only,
+body.role-administrador .action-admin-vendor {
     display: block; /* Mostrar para admin */
 }
 
@@ -265,14 +265,14 @@ body.role-vendedor .action-vendedor-only {
 
 /* 4. Reglas para secciones específicas del dashboard */
 /* Ocultar por defecto las estadísticas y acciones rápidas específicas */
-.action-admin-vendor-only,
+.action-admin-vendedor-only,
 .action-cliente-only {
     display: none; /* Ocultar por defecto */
 }
 
 /* 5. Mostrar las estadísticas SOLO para admin y vendedor */
-body.role-admin .action-admin-vendor-only,
-body.role-vendedor .action-admin-vendor-only {
+body.role-administrador .action-admin-vendedor-only,
+body.role-vendedor .action-admin-vendedor-only {
     display: grid; /* Mostrar como grid para las estadísticas */
 }
 

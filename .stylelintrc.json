@@ -1,0 +1,166 @@
+{
+  "extends": [
+    "stylelint-config-standard"
+  ],
+  "plugins": [
+    "stylelint-order"
+  ],
+  "rules": {
+    "indentation": 4,
+    "comment-empty-line-before": "always",
+    "rule-empty-line-before": "always",
+    "declaration-empty-line-before": "never",
+    "at-rule-empty-line-before": "always",
+    "selector-list-comma-newline-after": "always",
+    "declaration-block-semicolon-newline-after": "always",
+    "selector-class-pattern": "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+    "custom-property-pattern": "^--[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+    "keyframes-name-pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+    "color-function-notation": "modern",
+    "alpha-value-notation": "percentage",
+    "color-hex-length": "short",
+    "color-no-invalid-hex": true,
+    "color-named": "never",
+    "media-feature-range-notation": "context",
+    "no-duplicate-selectors": true,
+    "no-descending-specificity": true,
+    "no-extra-semicolons": true,
+    "property-no-unknown": true,
+    "unit-no-unknown": true,
+    "value-no-unknown": [
+      true,
+      {
+        "ignoreProperties": ["/transition$/"]
+      }
+    ],
+    "selector-max-id": 0,
+    "selector-max-compound-selectors": 4,
+    "selector-max-specificity": "0,4,0",
+    "declaration-block-single-line-max-declarations": 1,
+    "declaration-block-no-duplicate-properties": true,
+    "declaration-block-no-redundant-longhand-properties": true,
+    "order/properties-order": [
+      {
+        "groupName": "Posicionamiento y Layout",
+        "properties": [
+          "position",
+          "top",
+          "right",
+          "bottom",
+          "left",
+          "z-index",
+          "display",
+          "flex",
+          "flex-grow",
+          "flex-shrink",
+          "flex-basis",
+          "flex-flow",
+          "flex-direction",
+          "flex-wrap",
+          "justify-content",
+          "align-items",
+          "align-content",
+          "align-self",
+          "order",
+          "gap",
+          "grid",
+          "grid-area",
+          "grid-template",
+          "grid-template-areas",
+          "grid-template-rows",
+          "grid-template-columns",
+          "grid-row",
+          "grid-row-start",
+          "grid-row-end",
+          "grid-column",
+          "grid-column-start",
+          "grid-column-end",
+          "grid-auto-rows",
+          "grid-auto-columns",
+          "grid-auto-flow",
+          "float",
+          "clear"
+        ]
+      },
+      {
+        "groupName": "Modelo de Caja (Box Model)",
+        "properties": [
+          "box-sizing",
+          "width",
+          "min-width",
+          "max-width",
+          "height",
+          "min-height",
+          "max-height",
+          "margin",
+          "margin-top",
+          "margin-right",
+          "margin-bottom",
+          "margin-left",
+          "padding",
+          "padding-top",
+          "padding-right",
+          "padding-bottom",
+          "padding-left",
+          "border",
+          "border-width",
+          "border-style",
+          "border-color",
+          "border-radius",
+          "border-top",
+          "border-right",
+          "border-bottom",
+          "border-left",
+          "outline"
+        ]
+      },
+      {
+        "groupName": "Tipografía y Contenido",
+        "properties": [
+          "color",
+          "font",
+          "font-family",
+          "font-size",
+          "font-weight",
+          "font-style",
+          "line-height",
+          "letter-spacing",
+          "text-align",
+          "text-decoration",
+          "text-transform",
+          "white-space",
+          "overflow",
+          "text-overflow"
+        ]
+      },
+      {
+        "groupName": "Apariencia Visual",
+        "properties": [
+          "background",
+          "background-color",
+          "background-image",
+          "background-repeat",
+          "background-position",
+          "background-size",
+          "opacity",
+          "box-shadow",
+          "cursor"
+        ]
+      },
+      {
+        "groupName": "Animaciones y Transiciones",
+        "properties": [
+          "transition",
+          "transition-property",
+          "transition-duration",
+          "transition-timing-function",
+          "transition-delay",
+          "animation",
+          "animation-name",
+          "animation-duration",
+          "transform"
+        ]
+      }
+    ]
+  }
+} 

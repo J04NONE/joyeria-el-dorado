@@ -441,14 +441,14 @@ body.role-cliente .action-cliente-only {
 }
 
 /* Reglas de visibilidad para el rol de Administrador */
-body.role-admin .nav-admin-only,
-body.role-admin .nav-admin-vendor-only {
+body.role-administrador .nav-admin-only,
+body.role-administrador .nav-admin-vendor-only {
     display: list-item;
 }
 
 /* Reglas de visibilidad para el rol de Vendedor */
 body.role-vendedor .nav-admin-vendor-only {
-    display: list-item;
+    display: list-item !important;
 }
 
 /* Los clientes (role-cliente) mantienen display: none por defecto para elementos admin */
@@ -461,8 +461,8 @@ header .nav-admin-vendor-only {
 }
 
 /* Mostrar elementos administrativos solo para roles autorizados */
-body.role-admin header .nav-admin-only,
-body.role-admin header .nav-admin-vendor-only {
+body.role-administrador header .nav-admin-only,
+body.role-administrador header .nav-admin-vendor-only {
     display: list-item !important;
 }
 
@@ -481,7 +481,7 @@ body.role-cliente .action-cliente-only {
     display: block !important;
 }
 
-body.role-admin .action-cliente-only,
+body.role-administrador .action-cliente-only,
 body.role-vendedor .action-cliente-only {
     display: none !important;
 } 

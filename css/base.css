@@ -151,7 +151,7 @@ body {
 .input-group textarea:focus {
     outline: none;                /* Quitamos el contorno por defecto del navegador */
     border-color: var(--primary-color); /* Borde dorado cuando está seleccionado */
-    box-shadow: 0 0 5px rgba(212, 175, 55, 0.3); /* Sombra dorada sutil */
+    box-shadow: 0 0 5px rgb(212 175 55 / 30%); /* Sombra dorada sutil */
 }
 
 /* --- Sección: Estilos de Tablas --- */
@@ -237,60 +237,42 @@ tr:hover {
     margin-top: 20px;             /* Espacio arriba del elemento */
 }
 
-/* --- Sección: Reglas de Navegación Basadas en Roles --- */
-/* Estas reglas controlan qué enlaces de navegación ve cada tipo de usuario
-   (invitado, cliente, vendedor, administrador) en la barra de navegación. */
+/* --- SECCIÓN DEFINITIVA: VISIBILIDAD DE ELEMENTOS POR ROL EN EL HEADER --- */
 
-/* Por defecto, ocultar todos los enlaces específicos de rol y el logout */
-/* Y mostrar solo el enlace de login para el invitado */
-.nav-logout-link,
 .nav-admin-only,
 .nav-admin-vendor-only,
-.nav-cliente-only {
-    display: none !important;     /* Ocultamos estos enlaces por defecto */
-}
-.nav-login-link {
-    display: list-item !important; /* Mostramos el enlace de "Iniciar Sesión" por defecto */
-}
-
-/* Lógica para usuarios logueados: Ocultar login, mostrar logout y enlaces de su rol */
-body.role-cliente .nav-login-link,
-body.role-vendedor .nav-login-link,
-body.role-admin .nav-login-link {
-    display: none !important;     /* Ocultamos el login para usuarios logueados */
-}
-
-body.role-cliente .nav-logout-link,
-body.role-vendedor .nav-logout-link,
-body.role-admin .nav-logout-link {
-    display: list-item !important; /* Mostramos el logout para usuarios logueados */
-}
-
-body.role-cliente .nav-cliente-only { 
-    display: list-item !important; /* Mostramos enlaces solo para clientes */
-}
-
-body.role-vendedor .nav-admin-vendor-only { 
-    display: list-item !important; /* Mostramos enlaces para vendedores y admins */
-}
-
-body.role-admin .nav-admin-only,
-body.role-admin .nav-admin-vendor-only { 
-    display: list-item !important; /* Mostramos enlaces solo para administradores */
-}
-
-/* --- Sección: Reglas para el Carrito --- */
-/* El carrito solo debe ser visible para clientes */
-
-/* Ocultar el carrito por defecto */
+.nav-cliente-only,
+.nav-logout-link,
 .cart-icon-wrapper {
     display: none !important;
 }
-
-/* Mostrar el carrito solo para clientes */
-body.role-cliente .cart-icon-wrapper {
-    display: block !important;
+.nav-login-link {
+    display: list-item !important;
 }
+
+body.role-administrador .nav-logout-link,
+body.role-administrador .nav-admin-only,
+body.role-administrador .nav-admin-vendor-only {
+    display: list-item !important;
+}
+body.role-administrador .nav-login-link { display: none !important; }
+
+body.role-vendedor .nav-logout-link,
+body.role-vendedor .nav-admin-vendor-only {
+    display: list-item !important;
+}
+body.role-vendedor .nav-login-link { display: none !important; }
+
+body.role-cliente .nav-logout-link,
+body.role-cliente .nav-cliente-only,
+body.role-cliente .cart-icon-wrapper {
+    display: list-item !important;
+}
+body.role-cliente .cart-icon-wrapper {
+    display: flex !important;
+    align-items: center;
+}
+body.role-cliente .nav-login-link { display: none !important; }
 
 /* --- Sección: Utilidades de Accesibilidad --- */
 /* Clase para ocultar elementos visualmente pero mantenerlos accesibles para lectores de pantalla */

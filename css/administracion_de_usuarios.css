@@ -8,6 +8,7 @@
  */
 
 /* --- Estilos para el Contenedor Principal del Formulario de Actualización --- */
+
 /* Estos estilos controlan la apariencia del formulario de actualización de datos */
 
 .form-update-user {
@@ -16,7 +17,7 @@
     padding: 2.5rem;
     background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgb(0 0 0 / 5%);
 }
 
 .form-update-user .page-header h1 {
@@ -30,6 +31,7 @@
 }
 
 /* --- Estilos para los Campos de Búsqueda con Icono --- */
+
 /* Estos estilos controlan la apariencia de los campos de búsqueda */
 
 .input-with-icon {
@@ -65,6 +67,7 @@
 }
 
 /* --- Estilos para la Línea Separadora --- */
+
 /* Línea que separa la sección de búsqueda de la sección de edición */
 
 .form-update-user hr {
@@ -74,6 +77,7 @@
 }
 
 /* --- Estilos para los Botones de Acción --- */
+
 /* Estos estilos controlan la apariencia de los botones de guardar y cancelar */
 
 .form-actions {
@@ -100,6 +104,7 @@
 }
 
 /* --- Estilos para Mensajes de Error --- */
+
 /* Estos estilos controlan la apariencia de los mensajes de error */
 
 .error-message {
@@ -242,11 +247,11 @@
 }
 
 .btn-icon-edit:hover {
-    background-color: rgba(212, 175, 55, 0.1);
+    background-color: rgb(212 175 55 / 10%);
 }
 
 .btn-icon-danger:hover {
-    background-color: rgba(231, 76, 60, 0.1);
+    background-color: rgb(231 76 60 / 10%);
 }
 
 /* --- Estilos para Badges de Rol --- */
@@ -265,7 +270,7 @@
     color: white;
 }
 
-.vendor-badge {
+.vendedor-badge {
     background-color: #f39c12;
     color: white;
 }
