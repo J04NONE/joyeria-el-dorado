@@ -1,7 +1,7 @@
 # Joyería "El Dorado" — Sistema de Gestión Full-Stack
 
 **Autor:** Joan Michael Murillo  
-**Estado:** ✅ Completo — 56 tests pasando, documentación OpenAPI integrada, soporte para PostgreSQL (Neon)
+**Estado:** ✅ Completo — 56 tests pasando, documentación OpenAPI integrada, soporte para PostgreSQL (Neon). Auditoría frontend 2026-06-20: rutas CSS/JS y puerto de API corregidos, código y assets duplicados eliminados (ver §9).
 
 ---
 
@@ -35,7 +35,7 @@ joyeria/
 ├── frontend/                 # Cliente web
 │   ├── pages/                # Archivos HTML (14 páginas)
 │   ├── css/                  # Hojas de estilo (16 archivos)
-│   ├── js/                   # Scripts JS (11 archivos)
+│   ├── js/                   # Scripts JS
 │   └── assets/               # Imágenes y recursos
 │
 ├── docs/                     # Documentación global
@@ -110,11 +110,10 @@ python manage.py runserver
 
 ### Frontend
 ```bash
-cd frontend
-python -m http.server 8000
+python -m http.server 8080
 ```
 
-Abrir en el navegador: `http://localhost:8000/pages/dashboard.html`
+Abrir en el navegador: `http://localhost:8080/frontend/pages/dashboard.html`
 
 ### Credenciales de Prueba
 Ver `CREDENCIALES_PRUEBA.md` para usuarios de prueba.
@@ -217,6 +216,24 @@ DATABASE_URL=postgresql://usuario:password@host.neon.tech/dbname?sslmode=require
 - `backend/docs/FLUJO_AUTENTICACION_JWT.md` — Flujo JWT
 - `backend/docs/FLUJO1_REGISTRO_PUBLICO.md` — Registro público
 - `backend/docs/INTEGRACION_PROYECTO_JOYERIA.md` — Integración general
+
+### Auditoría frontend (2026-06-20)
+
+El proyecto quedó con una reorganización de carpetas incompleta desde su
+desarrollo original (más de un año atrás). Auditoría con Playwright MCP contra
+el backend en ejecución encontró y corrigió:
+
+- **Rutas CSS/JS rotas:** `css/` y `js/` vivían en la raíz del repo, pero las
+  14 páginas HTML los referenciaban como `../css/`, `../js/` (rutas relativas
+  a `frontend/pages/`), causando 404 en todas las páginas. Se movieron ambas
+  carpetas a `frontend/css/` y `frontend/js/`.
+- **Puerto incorrecto de la API:** `frontend/js/config.js` apuntaba a
+  `http://127.0.0.1:8001`, pero `manage.py runserver` usa el puerto `8000` por
+  defecto — rompía login y toda llamada a la API. Corregido a `8000`.
+- **Limpieza de duplicados/código muerto:** se eliminó un `assets/` huérfano
+  en la raíz del repo (idéntico byte a byte a `frontend/assets/`) y
+  `js/apiService.js` (no referenciado por ninguna página; todas usan
+  `js/api.js`).
 
 ---
 

@@ -9,12 +9,12 @@ REST Framework 3.16 + JWT (SimpleJWT). Frontend HTML5 + CSS3 + JavaScript
 - `backend/` — proyecto Django. Apps: `autenticacion`, `clientes`,
   `inventario`, `ventas`, `proveedores`. Config principal en
   `backend/joyeria_backend/`.
-- `css/` y `js/` — en la **raíz del repo** (no dentro de `frontend/`).
-- `frontend/` — subcarpeta anidada con `assets/` y `pages/` (los `.html`).
+- `frontend/` — subcarpeta anidada con `css/`, `js/`, `assets/` y `pages/`
+  (los `.html`). `css/`/`js/` ya fueron movidos aquí (antes vivían en la raíz
+  del repo y rompían todos los `<link>`/`<script>` con rutas relativas
+  `../css/`, `../js/` — fix aplicado en auditoría 2026-06-20).
 - `docs/` — documentación adicional (`findings.md`, `task_plan.md`,
-  `progress.md`, `roles.md`). Nota: `task_plan.md` describe una reorganización
-  de carpetas que quedó parcialmente aplicada — no asumir que `css/`/`js/` ya
-  están movidos dentro de `frontend/`.
+  `progress.md`, `roles.md`).
 
 ## Comandos esenciales
 
@@ -28,11 +28,14 @@ python manage.py runserver
 python manage.py test --keepdb      # ver gotcha de Neon abajo
 ```
 
-Frontend (servidor estático simple):
+Frontend (servidor estático simple, servir desde la raíz del repo para que
+`frontend/pages/*.html` resuelva sus rutas relativas):
+
 ```bash
-cd frontend  # o la raíz, según desde dónde se sirvan los HTML
-python -m http.server 8000
+python -m http.server 8080
 ```
+
+Abrir: `http://localhost:8080/frontend/pages/login.html`
 
 ## Base de datos
 
@@ -63,6 +66,9 @@ python -m http.server 8000
   `setup_groups`) escriben emojis a stdout. La consola de Windows usa cp1252
   por defecto y puede fallar con `UnicodeEncodeError`. Si pasa, correr con
   `PYTHONIOENCODING=utf-8` antes del comando.
+- **Sin usuarios de prueba en Neon:** `setup_groups` solo crea los 3 grupos
+  Django, no usuarios. Las credenciales de `CREDENCIALES_PRUEBA.md` requieren
+  crear esos usuarios manualmente (o un fixture/seed) en una DB nueva.
 
 ## Mantenimiento de este archivo
 

@@ -1,5 +1,8 @@
 # Joyería El Dorado - .gitignore
 
+# === Playwright MCP (auditoría/pruebas locales) ===
+.playwright-mcp/
+
 # === Python / Django ===
 __pycache__/
 *.py[cod]
