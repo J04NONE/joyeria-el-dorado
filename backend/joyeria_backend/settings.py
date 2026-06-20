@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 import os
+import dj_database_url
 from pathlib import Path
 from datetime import timedelta
 
@@ -96,17 +97,31 @@ WSGI_APPLICATION = 'joyeria_backend.wsgi.application'
 
 # joyeria_backend/settings.py
 
-# Configuración de base de datos con soporte para SQLite (dev) y PostgreSQL (prod)
-DATABASES = {
-    'default': {
-        'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.sqlite3'),
-        'NAME': os.environ.get('DB_NAME', BASE_DIR / 'db.sqlite3'),
-        'USER': os.environ.get('DB_USER', ''),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
+# Configuración de base de datos: usa Neon (PostgreSQL) si DATABASE_URL está
+# definida en el entorno; de lo contrario cae a SQLite/DB_* para desarrollo local.
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,  # Neon suspende el compute tras inactividad
+            ssl_require=True,         # Neon exige SSL
+        )
     }
-}
+    DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True  # requerido por el pooler de Neon
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.sqlite3'),
+            'NAME': os.environ.get('DB_NAME', BASE_DIR / 'db.sqlite3'),
+            'USER': os.environ.get('DB_USER', ''),
+            'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+            'HOST': os.environ.get('DB_HOST', 'localhost'),
+            'PORT': os.environ.get('DB_PORT', '5432'),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

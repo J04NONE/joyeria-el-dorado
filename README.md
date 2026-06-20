@@ -1,6 +1,7 @@
 # Joyería "El Dorado" — Sistema de Gestión Full-Stack
 
-**Estado:** ✅ Completo — 56 tests pasando, documentación OpenAPI integrada (Julio 2025)
+**Autor:** Joan Michael Murillo  
+**Estado:** ✅ Completo — 56 tests pasando, documentación OpenAPI integrada, soporte para PostgreSQL (Neon)
 
 ---
 
@@ -65,7 +66,8 @@ joyeria/
 | django-cors-headers | 4.7.0 | CORS |
 | Pillow | 11.3.0 | Procesamiento de imágenes |
 | drf-spectacular | 0.29.0 | Documentación OpenAPI/Swagger |
-| SQLite / PostgreSQL | — | Base de datos |
+| SQLite / PostgreSQL (Neon) | — | Base de datos |
+| dj-database-url | 2.3.0 | Parseo de `DATABASE_URL` para Neon |
 
 ### Frontend
 | Tecnología | Propósito |
@@ -191,10 +193,24 @@ DB_HOST=localhost
 DB_PORT=5432
 ```
 
+### Neon (PostgreSQL serverless)
+
+Si se define `DATABASE_URL`, tiene prioridad sobre la configuración anterior:
+```env
+DATABASE_URL=postgresql://usuario:password@host.neon.tech/dbname?sslmode=require
+```
+
+> **Nota sobre tests:** Neon usa un *connection pooler* que puede mantener una sesión
+> abierta y bloquear el `DROP DATABASE` al finalizar `python manage.py test`. Si ves
+> `database "test_..." is being accessed by other users`, corré los tests con
+> `python manage.py test --keepdb` (reutiliza la base de prueba en vez de borrarla).
+
 ---
 
 ## 9. Documentación Adicional
 
+- `CLAUDE.md` — Contexto resumido del proyecto (stack, estructura, comandos,
+  gotchas conocidos) para asistentes de IA como Claude Code
 - `docs/roles.md` — Auditoría del sistema de vistas por rol
 - `docs/findings.md` — Diagnóstico completo del proyecto
 - `docs/task_plan.md` — Plan de trabajo detallado

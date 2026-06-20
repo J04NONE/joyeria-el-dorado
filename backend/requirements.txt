@@ -11,3 +11,4 @@ tzdata==2025.2
 
 python-dotenv==1.2.2
 drf-spectacular==0.29.0
+dj-database-url==2.3.0
