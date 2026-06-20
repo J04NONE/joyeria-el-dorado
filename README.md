@@ -1,7 +1,5 @@
 # Joyería "El Dorado" — Sistema de Gestión Full-Stack
 
-**Evidencia:** GA6-220501123-AA4-EV01  
-**Autor:** Joan Michael Murillo  
 **Estado:** ✅ Completo — 56 tests pasando, documentación OpenAPI integrada (Julio 2025)
 
 ---
